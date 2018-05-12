@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/new/icons">
+        <file>icons/021.png</file>
+        <file>icons/delete30.png</file>
+        <file>icons/minus25.png</file>
+        <file>icons/plus33.png</file>
+        <file>icons/delete_icon.png</file>
+    </qresource>
+</RCC>
