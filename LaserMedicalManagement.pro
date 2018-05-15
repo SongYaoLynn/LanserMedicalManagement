@@ -30,9 +30,13 @@ SOURCES += \
     usernamenew.cpp \
     useredit.cpp \
     savetou.cpp \
-    saveudatatolocal.cpp \
     warning.cpp \
-    instruction.cpp
+    instruction.cpp \
+    parametersetting.cpp \
+    usersavedsetting.cpp \
+    precisioninfo.cpp \
+    guidanceinfo.cpp \
+    saveudatatolocal.cpp
 
 HEADERS += \
         precisetreatment.h \
@@ -41,9 +45,12 @@ HEADERS += \
     useredit.h \
     savetou.h \
     saveudatatolocal.h \
-    testdata.h \
     warning.h \
-    instruction.h
+    instruction.h \
+    precisioninfo.h \
+    parametersetting.h \
+    usersavedsetting.h \
+    guidanceinfo.h
 
 FORMS += \
         precisetreatment.ui \
@@ -53,7 +60,16 @@ FORMS += \
     savetou.ui \
     saveudatatolocal.ui \
     warning.ui \
-    instruction.ui
+    instruction.ui \
+    parametersetting.ui \
+    usersavedsetting.ui
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    pdf.qrc
+
+# qwt
+DEFINES += QT_DLL QWT_DLL
+LIBS += -L"D:\Qt\Qt5.10.1\5.10.1\mingw53_32\lib" -lqwtd
+LIBS += -L"D:\Qt\Qt5.10.1\5.10.1\mingw53_32\lib" -lqwt
+INCLUDEPATH += D:\Qt\Qt5.10.1\5.10.1\mingw53_32\include\qwt

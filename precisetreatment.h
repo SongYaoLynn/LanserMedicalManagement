@@ -9,8 +9,11 @@
 #include "useredit.h"
 #include "savetou.h"
 #include "saveudatatolocal.h"
-#include "testdata.h" //测试数据
 #include "warning.h"
+#include "precisioninfo.h"
+#include "usersavedsetting.h"
+#include <qwt_dial_needle.h>
+#include <QMap>
 namespace Ui {
 class PreciseTreatment;
 }
@@ -23,25 +26,21 @@ public:
     explicit PreciseTreatment(QWidget *parent = 0);
     ~PreciseTreatment();
 
-    int area = 0; //治疗区域
-    void userSavedSetting(QString username);
+    //用户信息
+    User *user;
+    QMap<QString, User> userInfo;
+    quint8 areaTreatment = 0;   //治疗区域：0--没有选择治疗区域
 
 signals:
     void changeDispalySignal(int);
     void areaChooseSignal(int); //  当前选择的治疗区域
-
+    void userSavedShowSignal(QString);//  用户设置界面弹框
 private slots:
 
     void changeDisplay(int index); // 切换页面
+    quint8 getArea(quint8 area);   //  得到当前选择的治疗区域
 
     void on_userSetComboBox_activated(int index);
-    void areaGetOne();  //获取当前所选治疗区域
-    void areaGetTwo();
-    void areaGetThree();
-    void areaSubmit();  //治疗区域选择--确认
-    void areaCancel();  //治疗区域选择--取消
-    void areaChoose(int area);  //治疗区域选择
-
 
     void on_clearBtn_clicked();
 
@@ -50,22 +49,17 @@ private slots:
 private:
     Ui::PreciseTreatment *ui;
     QStackedLayout *stackLayout;
-    QVBoxLayout *vBoxLayout;
-    QDialog *dlg;
-    QPushButton *areaBtn1;
-    QPushButton *areaBtn2;
-    QPushButton *areaBtn3;
-    QPushButton *submitBtn;
-    QPushButton *cancelBtn;
-
+    // 相关界面
     UserNew *userNew;
     UserNameNew *userNameNew;
     UserEdit *userEdit;
     SaveToU *saveToU;
     SaveUDataToLocal *saveUDataToLocal;
+    UserSavedSetting *userSavedSetting;
     Warning *warning;
 
-    void preciseTreatmentInit();    //初始化
+    void preciseTreatmentInit(User *user);    //初始化
+    void reloadPreciseTreatment(QString username, quint8 area); //根据所选用户名和治疗区域更新精准治疗界面的显示
 
 };
 
