@@ -6,7 +6,7 @@ UserSavedSetting::UserSavedSetting(QWidget *parent) :
     ui(new Ui::UserSavedSetting)
 {
     ui->setupUi(this);
-
+    warning = new Warning;
     connect(this, SIGNAL(areaChooseSignal(quint8)), this, SLOT(areaChoose(quint8)));
 }
 
@@ -17,6 +17,7 @@ UserSavedSetting::~UserSavedSetting()
 
 void UserSavedSetting::userSavedSettingShow(QString title)
 {
+    currentUserneme = title;
     this->setWindowTitle(title);
     this->show();
 }
@@ -49,18 +50,15 @@ void UserSavedSetting::areaChoose(quint8 area)
     else {
         this->area = 0;
     }
-    qDebug("当前选择%d\n", area);
 }
 
 void UserSavedSetting::on_submitBtn_clicked()
 {
-    if(!area){
-        warning = new Warning;
-        warning->warningShow(tr("请选择治疗区域！"));
+    if(!area){        
+        warning->warningShow("请选择区域");
     }
     else {
-        qDebug("保存%d\n", area);
-        emit areaNew(area);
+        emit areaNew(currentUserneme, area);
         this->close();
     }
 

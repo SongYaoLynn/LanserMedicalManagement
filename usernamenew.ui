@@ -61,6 +61,12 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="placeholderText">
+    <string>请输入用户名...</string>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>false</bool>
+   </property>
   </widget>
  </widget>
  <resources/>

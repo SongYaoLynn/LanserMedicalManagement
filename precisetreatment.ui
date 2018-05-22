@@ -58,11 +58,6 @@
      <string>读取U盘数据</string>
     </property>
    </item>
-   <item>
-    <property name="text">
-     <string>张三</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
@@ -195,6 +190,15 @@ background-repeat: no-repeat;</string>
     <property name="focusPolicy">
      <enum>Qt::ClickFocus</enum>
     </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::DefaultContextMenu</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="lowerBound">
+     <double>1.000000000000000</double>
+    </property>
     <property name="upperBound">
      <double>15.000000000000000</double>
     </property>
@@ -208,10 +212,19 @@ background-repeat: no-repeat;</string>
      <double>1.000000000000000</double>
     </property>
     <property name="value">
-     <double>0.000000000000000</double>
+     <double>1.000000000000000</double>
     </property>
     <property name="totalSteps">
-     <UInt>15</UInt>
+     <UInt>14</UInt>
+    </property>
+    <property name="pageSteps">
+     <UInt>1</UInt>
+    </property>
+    <property name="readOnly">
+     <bool>false</bool>
+    </property>
+    <property name="tracking">
+     <bool>false</bool>
     </property>
     <property name="wrapping">
      <bool>false</bool>
@@ -231,58 +244,6 @@ background-repeat: no-repeat;</string>
     <property name="maxScaleArc">
      <double>180.000000000000000</double>
     </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>140</y>
-      <width>80</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="minute">
-       <property name="text">
-        <string>59</string>
-       </property>
-       <property name="scaledContents">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>分：</string>
-       </property>
-       <property name="scaledContents">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="second">
-       <property name="text">
-        <string>59</string>
-       </property>
-       <property name="scaledContents">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>秒</string>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
@@ -308,6 +269,38 @@ background-repeat: no-repeat;</string>
     </property>
     <property name="text">
      <string>准备</string>
+    </property>
+   </widget>
+   <widget class="QTimeEdit" name="timeSurplus">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>140</y>
+      <width>61</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="buttonSymbols">
+     <enum>QAbstractSpinBox::NoButtons</enum>
+    </property>
+    <property name="displayFormat">
+     <string>HH:mm:ss</string>
+    </property>
+    <property name="time">
+     <time>
+      <hour>0</hour>
+      <minute>3</minute>
+      <second>10</second>
+     </time>
     </property>
    </widget>
   </widget>

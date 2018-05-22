@@ -2,6 +2,10 @@
 #define USEREDIT_H
 
 #include <QWidget>
+#include <precisioninfo.h>
+#include "warning.h"
+#include <QLabel>
+#include <QSpinBox>
 
 namespace Ui {
 class UserEdit;
@@ -14,13 +18,33 @@ class UserEdit : public QWidget
 public:
     explicit UserEdit(QWidget *parent = 0);
     ~UserEdit();
+    void timeChange(QLabel* label, QSpinBox* spinBoxS, int data);  //增减时间
+    quint16 toSeconds(QLabel* label, QSpinBox* spinBoxS);   //将时间转为“秒”
+    void toMinuteSecond(QLabel* label, QSpinBox* spinBoxS, quint16 seconds);
+    void userEditInit();
+
 signals:
     void changeDispalySignal(int);
+    void reloadSignal();
+    void writeToFileSignal();
 private slots:
     void on_preBtn_clicked();
 
+    void on_saveBtn_clicked();
+
+    void on_cancelBtn_clicked();
+
+    void on_item1_3_1_valueChanged(int arg1);
+
+    void on_item2_3_1_valueChanged(int arg1);
+
+    void on_item3_3_1_valueChanged(int arg1);
+
 private:
     Ui::UserEdit *ui;
+    Warning *warning;
+
+    void showData(QString username);
 };
 
 #endif // USEREDIT_H

@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+QT       += serialport
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = LaserMedicalManagement
@@ -31,12 +33,18 @@ SOURCES += \
     useredit.cpp \
     savetou.cpp \
     warning.cpp \
-    instruction.cpp \
-    parametersetting.cpp \
     usersavedsetting.cpp \
     precisioninfo.cpp \
     guidanceinfo.cpp \
-    saveudatatolocal.cpp
+    saveudatatolocal.cpp \
+    fileoperation.cpp \
+    global.cpp \
+    serialport.cpp \
+    usbcollection.cpp \
+    usbdevice.cpp \
+    hint.cpp \
+    usbchoose.cpp \
+    savehint.cpp
 
 HEADERS += \
         precisetreatment.h \
@@ -46,11 +54,17 @@ HEADERS += \
     savetou.h \
     saveudatatolocal.h \
     warning.h \
-    instruction.h \
     precisioninfo.h \
-    parametersetting.h \
     usersavedsetting.h \
-    guidanceinfo.h
+    guidanceinfo.h \
+    fileoperation.h \
+    global.h \
+    serialport.h \
+    usbcollection.h \
+    usbdevice.h \
+    hint.h \
+    usbchoose.h \
+    savehint.h
 
 FORMS += \
         precisetreatment.ui \
@@ -60,9 +74,10 @@ FORMS += \
     savetou.ui \
     saveudatatolocal.ui \
     warning.ui \
-    instruction.ui \
-    parametersetting.ui \
-    usersavedsetting.ui
+    usersavedsetting.ui \
+    hint.ui \
+    usbchoose.ui \
+    savehint.ui
 
 RESOURCES += \
     images.qrc \
@@ -73,3 +88,5 @@ DEFINES += QT_DLL QWT_DLL
 LIBS += -L"D:\Qt\Qt5.10.1\5.10.1\mingw53_32\lib" -lqwtd
 LIBS += -L"D:\Qt\Qt5.10.1\5.10.1\mingw53_32\lib" -lqwt
 INCLUDEPATH += D:\Qt\Qt5.10.1\5.10.1\mingw53_32\include\qwt
+
+

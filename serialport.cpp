@@ -43,7 +43,7 @@ void SerialPort::initializePort()
 {
     serial = new QSerialPort;
 
-    serial->setPortName("COM3");
+    serial->setPortName("COM2");
 
     serial->open(QIODevice::ReadWrite);
 
