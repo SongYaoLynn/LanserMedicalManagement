@@ -90,7 +90,9 @@ void UserEdit::on_saveBtn_clicked()
 
     userInfoNew.setPatientItem(item1, item2, item3);
     PreciseTreatment::userInfo[ui->usernames->currentText()] = userInfoNew;
-    emit changeDispalySignal(0);
+//    userEditInit();
+    warning->warningShow("保存成功");
+    emit reloadSignal();
     emit writeToFileSignal();
 }
 // 删除按键
@@ -102,6 +104,7 @@ void UserEdit::on_cancelBtn_clicked()
             if(infoIt.key() == ui->usernames->currentText()){
                 PreciseTreatment::userInfo.erase(infoIt++);
                 emit writeToFileSignal();
+                emit reloadSignal();
                 break;
             }
             else {
@@ -110,13 +113,16 @@ void UserEdit::on_cancelBtn_clicked()
         }
     }
     else {
-        qDebug("要删除对象不存在");      //==================
+        warning->warningShow("要删除对象不存在");
+
     }
     if(!PreciseTreatment::userInfo.isEmpty()){
         userEditInit();
     }
     else {
         emit changeDispalySignal(0);
+        emit writeToFileSignal();
+        emit reloadSignal();
     }
 }
 // 根据所选用户名显示数据
@@ -157,4 +163,9 @@ void UserEdit::on_item2_3_1_valueChanged(int arg1)
 void UserEdit::on_item3_3_1_valueChanged(int arg1)
 {
     timeChange(ui->item3_3_2, ui->item3_3_1, arg1);
+}
+
+void UserEdit::on_usernames_activated(const QString &arg1)
+{
+    showData(arg1);
 }

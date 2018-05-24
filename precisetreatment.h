@@ -42,7 +42,7 @@ public:
     //用户信息
     static QMap<QString, User> userInfo;   //  用户信息
 signals:
-    void changeDispalySignal(int);
+    void changeDispalySignal(int);  //页面切换
     void areaChooseSignal(int); //  当前选择的治疗区域
     void userSavedShowSignal(QString);//  用户设置界面弹框
 
@@ -51,17 +51,13 @@ private slots:
     void getArea(QString currentUsername, quint8 area);   //  得到当前选择的治疗区域,刷新精准治疗界面
     void hintTimerZero();   //计时结束
     void reload();  // 刷新用户
-    void writeToFile(); //保存到本地
+    void writeToFile(); //保存到本地文件
 
     void on_userSetComboBox_activated(int index);
 
     void on_clearBtn_clicked();
 
-    void on_test_clicked();     //test-----------
-
     void on_stateBtn_clicked();
-
-    void on_gears_valueChanged(double value);
 
     void on_gears_sliderReleased();
 
@@ -83,7 +79,7 @@ private:
 
     bool laserDialogState = false;  //  激光出光提示框显示状态：true--显示，false--关闭
     bool userSelected = false;  //是否选择了用户
-    QString nameCurrent;
+    QString nameCurrent;    //当前所选的用户名
     quint8 areaCurrent = 0;   //治疗区域：0--没有选择治疗区域
     quint16 numOne = 100;  //数值1==========
 

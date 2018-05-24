@@ -15,8 +15,7 @@ class UserSavedSetting : public QDialog
 public:
     explicit UserSavedSetting(QWidget *parent = 0);
     ~UserSavedSetting();
-    quint8 area = 0;   //当前治疗区域
-    QString currentUserneme = "";
+
 signals:
     void areaChooseSignal(quint8);
     void areaNew(QString, quint8);
@@ -35,6 +34,8 @@ private slots:
 private:
     Ui::UserSavedSetting *ui;
     Warning *warning;
+    quint8 area = 0;   //当前治疗区域
+    QString currentUserneme = "";
 
 };
 

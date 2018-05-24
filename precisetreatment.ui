@@ -153,19 +153,6 @@ background-repeat: no-repeat;</string>
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="test">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>260</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>test</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="gearsGroup" native="true">
    <property name="geometry">
     <rect>

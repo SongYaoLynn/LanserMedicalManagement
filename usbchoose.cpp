@@ -26,13 +26,18 @@ void USBChoose::usbChooseInit()
     ui->usbList->clear();
     QMap<QString, USBDevice> usbInfoNow = usbCollectionInfo->usbDeviceMap;
     QMap<QString, USBDevice>::iterator usbIt;
-    if(!usbInfoNow.isEmpty()){
+    if(!usbInfoNow.isEmpty() && usbInfoNow.size()){
         // usb检查=========
+
         for(usbIt = usbInfoNow.begin(); usbIt != usbInfoNow.end(); ++usbIt){
             ui->usbList->addItem(usbIt.key());
         }
+        this->show();
     }
-    this->show();
+    else{
+        warning->warningShow("无可用设备");
+    }
+
 }
 
 void USBChoose::on_cancelBtn_clicked()

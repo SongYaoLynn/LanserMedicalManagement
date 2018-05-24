@@ -14,9 +14,10 @@ class SaveHint : public QDialog
 public:
     explicit SaveHint(QWidget *parent = 0);
     ~SaveHint();
-    void saveHintShow(QString repetitiveName);
+    void saveHintShow(QStringList repetitiveName);
 signals:
-    void saveHintSignal(QString, bool);
+    void repetitiveNamesSignal(QStringList,bool allChecked, bool replaced);
+
 private slots:
     void on_submitBtn_clicked();
 
@@ -24,7 +25,7 @@ private slots:
 
 private:
     Ui::SaveHint *ui;
-    QString repetitiveName;
+    QStringList repetitiveName;
 };
 
 #endif // SAVEHINT_H

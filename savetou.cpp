@@ -8,8 +8,10 @@ SaveToU::SaveToU(QWidget *parent) :
 {
     ui->setupUi(this);
     warning = new Warning;
+    saveHint = new SaveHint;
     usbChoose = new USBChoose;
     connect(usbChoose, SIGNAL(usbSelectedSignal(QString)), this, SLOT(getUSBSeledted(QString)));
+    connect(saveHint, SIGNAL(repetitiveNamesSignal(QStringList,bool,bool)), this, SLOT(repetitionDeal(QStringList,bool,bool)));
 }
 
 SaveToU::~SaveToU()
@@ -22,6 +24,7 @@ void SaveToU::saveToUInit()
     showState = true;
     userInfoLocal = PreciseTreatment::userInfo;
     ui->userList->clear();
+    ui->selectedList->clear();
     QMap<QString, User>::iterator userIt;
     if(!userInfoLocal.empty()){
         for(userIt = userInfoLocal.begin(); userIt != userInfoLocal.end(); ++userIt){
@@ -63,9 +66,7 @@ void SaveToU::on_searchBtn_clicked()
     }
 
 }
-
-
-
+//移动单个
 void SaveToU::signalMove(QListWidget *src, QListWidget *trg)
 {
     if(!src->selectedItems().isEmpty()){      
@@ -82,7 +83,7 @@ void SaveToU::signalMove(QListWidget *src, QListWidget *trg)
         warning->warningShow("请选择用户");
     }
 }
-
+//移动所有
 void SaveToU::multiMove(QListWidget *src, QListWidget *trg)
 {
     if(src->count()){
@@ -127,16 +128,6 @@ bool SaveToU::listContains(QString srcValue, QListWidget *trg)
     }
 }
 
-bool SaveToU::checkUsb(QString checkInfo)
-{
-    if(checkInfo == "H"){
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 void SaveToU::on_toSelected_clicked()
 {
     signalMove(ui->userList, ui->selectedList);
@@ -168,7 +159,7 @@ void SaveToU::on_saveBtn_clicked()
       }
       //usb设备信息
       QMap<QString, USBDevice> usbInfoNow = usbCollectionInfo->usbDeviceMap;
-      if(!usbInfoNow.isEmpty()){
+      if(!usbInfoNow.isEmpty() && usbInfoNow.size()){
           usbChoose->usbChooseInit();   //选择u盘
       }
       else{
@@ -179,24 +170,98 @@ void SaveToU::on_saveBtn_clicked()
         warning->warningShow("没有需要保存的用户信息");
     }
 }
-
+//选择u盘后，保存所选用户信息
 void SaveToU::getUSBSeledted(QString usbSelected)
 {
     if(showState){
         if(!usbSelected.isEmpty()){
-            QString filePath = usbSelected + ":/test/test.txt"; //文件地址===需改
+            filePath = usbSelected + ":/test/test.txt"; //文件地址===需改
             // 判断所选用户信息是否存在
+            infoFromU = *FileOperation::readFromFile(filePath);
+            QMap<QString, User>::iterator infoIt;
+            if(!infoFromU.isEmpty()){
+                for(infoIt = selectedUser.begin(); infoIt != selectedUser.end(); ++infoIt){
+                    if(infoFromU.contains(infoIt.key())){
+                        repetitiveList << infoIt.key();
+                    }
+                    else {
+                        combinationMap[infoIt.key()] = selectedUser[infoIt.key()];
+                    }
+                }
+                for(infoIt = infoFromU.begin(); infoIt != infoFromU.end(); ++infoIt){
+                    if(!selectedUser.contains(infoIt.key())){
+                        combinationMap[infoIt.key()] = infoFromU[infoIt.key()];
+                    }
 
-
-            if(FileOperation::writeToFile(filePath, selectedUser)){
+                }
+                //有重复
+                if(repetitiveList.size()){
+                    saveHint->saveHintShow(repetitiveList);
+                }
+                //没有重复
+                else{
+                    if(FileOperation::writeToFile(filePath, combinationMap)){
+                        warning->warningShow("保存成功");
+                    }
+                    else{
+                        warning->warningShow("文件打开失败");
+                    }
+                }
+            }
+            //文件打开失败或文件为空
+            else{
+                if(FileOperation::writeToFile(filePath, selectedUser)){
+                    warning->warningShow("保存成功");
+                }
+                else{
+                    warning->warningShow("文件打开失败");
+                }
+            }
+        }
+        else{
+            warning->warningShow("没有需要保存的用户信息");
+        }
+    }
+}
+//重复项处理
+void SaveToU::repetitionDeal(QStringList repetitiveName, bool allState, bool replaceState)
+{
+    while (repetitiveName.size()) {
+        if(allState){
+            if(replaceState){
+                for(int i = 0; i < repetitiveName.size(); i++){
+                    combinationMap[repetitiveName.at(i)] = selectedUser[repetitiveName.at(i)];
+                }
+            }
+            else{
+                for(int i = 0; i < repetitiveName.size(); i++){
+                    combinationMap[repetitiveName.at(i)] = infoFromU[repetitiveName.at(i)];
+                }
+            }
+            if(FileOperation::writeToFile(filePath, combinationMap)){
                 warning->warningShow("保存成功");
             }
             else{
                 warning->warningShow("文件打开失败");
             }
+            repetitiveName.clear();
         }
         else{
-            warning->warningShow("没有需要保存的用户信息");
+//            if(replaceState){
+//                QStringList repetitiveCurent;
+//                repetitiveCurent << repetitiveName.at(0);
+//                QMap<QString, User> currentList = getMapFromName(repetitiveCurent);
+//                if(FileOperation::writeToFile(filePath, currentList)){
+////                    warning->warningShow("保存成功");
+//                }
+//                else{
+//                    warning->warningShow("文件打开失败");
+//                }
+//            }
+//            repetitiveName.removeFirst();
+//            if(repetitiveName.size()){
+//                saveHint->saveHintShow(repetitiveName); ///////
+//            }
         }
     }
 }

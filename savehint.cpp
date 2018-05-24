@@ -13,6 +13,7 @@ SaveHint::SaveHint(QWidget *parent) :
 //                                         任务栏右击什么也没有，任务栏窗口名也没有，可以任务栏关闭
     this->setWindowFlags(flags);
     this->setWindowModality(Qt::ApplicationModal);  //  禁止主窗口的操作
+    ui->allCheck->setEnabled(false);    // 全选键锁死=====================
 }
 
 SaveHint::~SaveHint()
@@ -20,21 +21,31 @@ SaveHint::~SaveHint()
     delete ui;
 }
 
-void SaveHint::saveHintShow(QString repetitiveName)
+void SaveHint::saveHintShow(QStringList repetitiveName)
 {
-    ui->name->setText(repetitiveName);
+    ui->hintText->setText(repetitiveName.at(0) + "用户已存在，是否替换？");
     this->repetitiveName = repetitiveName;
     this->show();
 }
 
 void SaveHint::on_submitBtn_clicked()
 {
-    emit saveHintSignal(repetitiveName, true);
+    if(ui->allCheck->isChecked()){
+        emit repetitiveNamesSignal(repetitiveName,true, true);
+    }
+    else {
+        emit repetitiveNamesSignal(repetitiveName,false, true);
+    }
     this->close();
 }
 
 void SaveHint::on_cancelBtn_clicked()
 {
-    emit saveHintSignal(repetitiveName, false);
+    if(ui->allCheck->isChecked()){
+        emit repetitiveNamesSignal(repetitiveName,true, false);
+    }
+    else {
+        emit repetitiveNamesSignal(repetitiveName,false, false);
+    }
     this->close();
 }

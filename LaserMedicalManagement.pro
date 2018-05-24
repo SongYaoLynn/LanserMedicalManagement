@@ -80,8 +80,7 @@ FORMS += \
     savehint.ui
 
 RESOURCES += \
-    images.qrc \
-    pdf.qrc
+    images.qrc
 
 # qwt
 DEFINES += QT_DLL QWT_DLL

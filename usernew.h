@@ -18,10 +18,8 @@ public:
     explicit UserNew(QWidget *parent = 0);
     ~UserNew();
     void userNewInit(); //  新建用户界面初始化
-    void timeChange(QLabel* label, QSpinBox* spinBoxS, int data);  //增减时间
-    quint16 toSeconds(QLabel* label, QSpinBox* spinBoxS);   //将时间转为“秒”
-    User userNewInfo;
-    PatientItem item1, item2, item3;
+
+
 signals:
     void changeDispalySignal(int);
     void userNewInfoSignal(User);
@@ -41,6 +39,11 @@ private slots:
 private:
     Ui::UserNew *ui;
 
+    User userNewInfo;
+    PatientItem item1, item2, item3;
+
+    void timeChange(QLabel* label, QSpinBox* spinBoxS, int data);  //增减时间
+    quint16 toSeconds(QLabel* label, QSpinBox* spinBoxS);   //将时间转为“秒”
 
 };
 

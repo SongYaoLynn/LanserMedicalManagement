@@ -9,6 +9,8 @@ SaveUDataToLocal::SaveUDataToLocal(QWidget *parent) :
     ui->setupUi(this);
     warning = new Warning;
     saveHint = new SaveHint;
+
+    connect(saveHint, SIGNAL(repetitiveNamesSignal(QStringList,bool,bool)), this, SLOT(repetitionDeal(QStringList,bool,bool)));
 }
 
 SaveUDataToLocal::~SaveUDataToLocal()
@@ -18,7 +20,9 @@ SaveUDataToLocal::~SaveUDataToLocal()
 
 void SaveUDataToLocal::saveUToLocalInit()
 {
+
     ui->userList->clear();
+    ui->selectedList->clear();
     QMap<QString, User>::iterator userIt;
     if(!userInfoLocal.empty()){
         for(userIt = userInfoLocal.begin(); userIt != userInfoLocal.end(); ++userIt){
@@ -165,22 +169,48 @@ void SaveUDataToLocal::on_saveBtn_clicked()
               PreciseTreatment::userInfo[selectedName] = userInfoLocal[selectedName];
           }
           else{
-              saveHint->saveHintShow(selectedName);
+              repetitiveNames << selectedName;
           }
 
       }
-      warning->warningShow("保存成功");
-      emit reloadSignal();
-      emit writeToFileSignal();
+      if(!repetitiveNames.size()){
+          warning->warningShow("保存成功");
+          emit reloadSignal();
+          emit writeToFileSignal();
+      }
+      else{
+          saveHint->saveHintShow(repetitiveNames);
+      }
+
     }
     else{
         warning->warningShow("没有需要保存的用户信息");
     }
 }
-
-void SaveUDataToLocal::repetitionDeal(QString repetitiveName, bool replaced)
+// 对重复项的处理====有bug：弹窗页面覆盖？？？？？？？？？？？？？？？？？？？？
+void SaveUDataToLocal::repetitionDeal(QStringList repetitiveName, bool allState, bool replaceState)
 {
-    if(replaced){
-        PreciseTreatment::userInfo[repetitiveName] = userInfoLocal[repetitiveName];
+    while (repetitiveName.size()) {
+        if(allState){
+            if(replaceState){
+                for(int i = 0; i < repetitiveName.size(); i++){
+                    PreciseTreatment::userInfo[repetitiveName.at(i)] = userInfoLocal[repetitiveName.at(i)];
+                }
+                repetitiveName.clear();
+            }
+        }
+        else{
+            if(replaceState){
+                PreciseTreatment::userInfo[repetitiveName.at(0)] = userInfoLocal[repetitiveName.at(0)];
+            }
+            repetitiveName.removeFirst();
+            if(repetitiveName.size()){
+                saveHint->saveHintShow(repetitiveName); ///////
+            }
+        }
     }
+    warning->warningShow("保存成功");
+    emit reloadSignal();
+    emit writeToFileSignal();
 }
+

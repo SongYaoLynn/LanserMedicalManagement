@@ -59,7 +59,7 @@ PreciseTreatment::PreciseTreatment(QWidget *parent) :
     connect(userNew, SIGNAL(userNewInfoSignal(User)), userNameNew, SLOT(getUserNewInfo(User)));    // 新建-->用户名输入
     connect(userNameNew, SIGNAL(writeToFileSignal()), this, SLOT(writeToFile()));   // 刷新本地文件信息
     connect(userEdit, SIGNAL(writeToFileSignal()), this, SLOT(writeToFile()));  //刷新本地文件信息
-    connect(saveUDataToLocal, SIGNAL(writeToFileSignal()), this, SLOT(writeToFile()));
+    connect(saveUDataToLocal, SIGNAL(writeToFileSignal()), this, SLOT(writeToFile())); //刷新本地文件信息
     connect(usbChoose, SIGNAL(usbSelectedSignal(QString)), saveUDataToLocal, SLOT(getUSBSelected(QString))); //当前所选的u盘
 
 }
@@ -115,11 +115,13 @@ void PreciseTreatment::on_userSetComboBox_activated(int index)
     if (index < 4)
     {
         switch (index) {
+        //新建
         case 0:
             emit changeDispalySignal(1);
             userNew->userNewInit();
             setState(false);
             break;
+        //编辑
         case 1:
         {
             if(!userInfo.isEmpty()){
@@ -132,11 +134,13 @@ void PreciseTreatment::on_userSetComboBox_activated(int index)
             setState(false);
             break;
         }
+//            保存到u盘
         case 2:
             emit changeDispalySignal(4);
             saveToU->saveToUInit();
             setState(false);
             break;
+        //保存u盘信息到本地
         case 3:
             usbChoose->usbChooseInit();
             setState(false);
@@ -171,17 +175,19 @@ void PreciseTreatment::preciseTreatmentInit()
     ui->stateBtn->setText(tr("待机"));
     setState(false);
 }
-
+// 刷新页面文字和计时器时间
 void PreciseTreatment::refreshWords(PatientItem patientData, quint8 rings, quint16 valueOne, bool state)
 {
     quint16 timeRemaining;
     quint16 wordTwo = rings * patientData.getSeconds();
     quint16 wordOne = valueOne - wordTwo;
     if(state){
+        //初始显示
         quint16 timeTotal= valueOne / rings;
         timeRemaining = timeTotal - patientData.getSeconds();
     }
     else{
+        //档位环变化
         timeRemaining = valueOne / rings;
     }
     ui->text1->setText(QString::number(wordOne));
@@ -206,9 +212,9 @@ quint16 PreciseTreatment::qTimeToSeconds(QTime time)
 void PreciseTreatment::setState(bool state)
 {
     userSelected = state;
-    ui->gears->setEnabled(state);
+    ui->gears->setEnabled(state);   //档位环 可点击状态设置
 }
-
+// 更新当前用户、当前治疗区域的信息（数值环，时间）
 void PreciseTreatment::renewPatientCurrent(quint8 rings, quint16 seconds)
 {
     PatientItem patientNew = getCurrentPatient();
@@ -228,7 +234,7 @@ void PreciseTreatment::renewPatientCurrent(quint8 rings, quint16 seconds)
         break;
     }
 }
-
+//当前用户所选治疗区域对象
 PatientItem PreciseTreatment::getCurrentPatient()
 {
     switch (areaCurrent) {
@@ -250,17 +256,6 @@ PatientItem PreciseTreatment::getCurrentPatient()
 void PreciseTreatment::on_clearBtn_clicked()
 {
     ui->text2->setText(tr("0"));
-}
-// test按钮
-void PreciseTreatment::on_test_clicked()
-{
-    hint = new Hint;
-    QTime timeOld = ui->timeSurplus->time();
-    hint->hintShow(timeOld);
-    //    if(!hint->timerState){
-    //        hint->close();
-    //    }
-
 }
 
 // 准备/待机按键
@@ -351,32 +346,7 @@ void PreciseTreatment::writeToFile()
     }
 }
 
-// 档位环操作==============有bug
-void PreciseTreatment::on_gears_valueChanged(double value)
-{
-//    bool correct = false;
-//    if(userSelected){
-//        quint16 gearValueOld = patientCurrent.getRings();  //  原来的档位
-//        QByteArray test8 = "test8"; //  根据档位信息得到的指令=====需改
-//        if (serialPort.sendAndReceiveCompare(test8, test8)){
-//            refreshWords(patientCurrent, value, numOne, false);
-//            quint8 ringsNew = value;
-//            quint16 secondsNew = qTimeToSeconds(ui->timeSurplus->time());
-//            renewPatientCurrent(ringsNew, secondsNew);
-//            correct = true;
-//            qDebug("返回正确");
-//            //  高亮显示0~value
-//            //==============================
-//        }
-//        else if(!correct) {
-//            qDebug("返回错误");
-//            ui->gears->setValue(gearValueOld);
-//        }
-
-//    }
-
-}
-
+// 档位环操作==============
 void PreciseTreatment::on_gears_sliderReleased()
 {
     quint8 value = ui->gears->value();

@@ -46,14 +46,16 @@ private slots:
 
     void on_saveBtn_clicked();
 
-    void repetitionDeal(QString repetitiveName, bool replaced);
+    void repetitionDeal(QStringList repetitiveName, bool allState, bool replaceState);//对重复项的处理
 
 private:
     Ui::SaveUDataToLocal *ui;
     Warning *warning;
     SaveHint *saveHint;
 
+
     QMap<QString, User>::iterator resultIt; //  搜索结果
+    QStringList repetitiveNames;    // 重复的用户名集合
 
     void signalMove(QListWidget *src, QListWidget *trg);    //单项移动
     void multiMove(QListWidget *src, QListWidget *trg); //全体移动

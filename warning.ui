@@ -25,6 +25,9 @@
    <property name="text">
     <string>警告</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources/>

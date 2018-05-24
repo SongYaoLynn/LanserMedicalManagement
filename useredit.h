@@ -18,9 +18,7 @@ class UserEdit : public QWidget
 public:
     explicit UserEdit(QWidget *parent = 0);
     ~UserEdit();
-    void timeChange(QLabel* label, QSpinBox* spinBoxS, int data);  //增减时间
-    quint16 toSeconds(QLabel* label, QSpinBox* spinBoxS);   //将时间转为“秒”
-    void toMinuteSecond(QLabel* label, QSpinBox* spinBoxS, quint16 seconds);
+
     void userEditInit();
 
 signals:
@@ -40,11 +38,16 @@ private slots:
 
     void on_item3_3_1_valueChanged(int arg1);
 
+    void on_usernames_activated(const QString &arg1);
+
 private:
     Ui::UserEdit *ui;
     Warning *warning;
 
     void showData(QString username);
+    void timeChange(QLabel* label, QSpinBox* spinBoxS, int data);  //增减时间
+    quint16 toSeconds(QLabel* label, QSpinBox* spinBoxS);   //将时间转为“秒”
+    void toMinuteSecond(QLabel* label, QSpinBox* spinBoxS, quint16 seconds);
 };
 
 #endif // USEREDIT_H
